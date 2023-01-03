@@ -6,16 +6,16 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:03:40 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/04 02:31:28 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/04 02:52:33 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 	Program shortcuts:
 		[ Arrow key ] (any combination): Pans the camera
-		[ Ctrl ] [ Up / down ] or [ Ctrl ] [ Scroll ]: Zoom in / out
+		[ Ctrl ] [ Up / down ] or [ Scroll ]: Zoom in / out
 		[ Ctrl ] [ Shift ] [ Up / down ]: Change color scheme
-		[ Ctrl ] [ W ]: Exit application
+		[ Esc ]: Exit application
 
 	Or change the shortcuts defined in e_keydef at fractol.h!
 */

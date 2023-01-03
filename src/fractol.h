@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:20:41 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/04 02:07:54 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/04 02:53:12 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_vars {
 // kdef_ = key defines
 // kmod_ = moded key combinations
 enum	e_keydef {
+	kdef_term	= XK_Escape,
 	kdef_mod	= XK_Control_L,
 	kdef_up		= XK_Up,
 	kdef_down	= XK_Down,
@@ -74,7 +75,7 @@ void	mlx_int_size_limit(t_mlx *mlx, int w, int h, int max);
 int		key_event(int code, t_vars *vars);
 int		mod_key(int code, t_vars *vars);
 int		key_released(int code, t_vars *vars);
-int		mouse_event(int code, int x, int y, t_vars *vars);
+int		mouse_event(int code, int x, int y);
 int		resize_window(t_vars *vars);
 int		close_window(t_vars *vars);
 
