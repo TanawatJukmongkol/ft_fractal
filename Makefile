@@ -1,6 +1,6 @@
 
 run:
-	gcc main.c -lX11 -lXext -lmlx -g
+	gcc main.c -lX11 -lXext -lmlx -g -Wall -Werror -Wextra
 	./a.out
 
 # Minilibx installer

@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:03:40 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/02 13:03:39 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/03 10:08:03 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,20 @@ typedef struct s_mlx {
 	int		win_height;
 }	t_mlx;
 
+int	mouse_event(int code, int x, int y)
+{
+	printf("\033[A\33[2KMouseEvent [%d] (%d, %d)\n", code, x, y);
+	return (0);
+}
+
 int	resize_window(t_mlx *mlx)
 {
 	XWindowAttributes	attr;
 
 	XGetWindowAttributes((
-			(t_xvar *)mlx->mlx_ptr)->display,(
+			(t_xvar *)mlx->mlx_ptr)->display, (
 			(t_win_list *)mlx->win_ptr)->window, &attr);
-	printf("Resized! [%dx%d]\n", attr.width, attr.height);
+	printf("\033[A\33[2KResized! [%dx%d]\n", attr.width, attr.height);
 	mlx->win_width = attr.width;
 	mlx->win_height = attr.height;
 	return (0);
@@ -81,13 +87,13 @@ int	main(void)
 	mlx.mlx_ptr = mlx_init();
 	mlx.win_ptr = mlx_new_window(mlx.mlx_ptr,
 			690, 420,
-			"MiniLibX got hacked LMAO - Airgeddon1337");
+			"ft_fractal");
+	mlx_hook(mlx.win_ptr, DestroyNotify, 0L, close_window, &mlx);
 	mlx_int_size_limit(&mlx, 620, 350, 0);
 	mlx_int_size_limit(&mlx, 1380, 840, 1);
 	mlx_hook(mlx.win_ptr, 0, StructureNotifyMask, NULL, &mlx);
 	mlx_hook(mlx.win_ptr, ConfigureNotify, 0L, resize_window, &mlx);
-	mlx_hook(mlx.win_ptr, DestroyNotify, 0L, close_window, &mlx);
+	mlx_hook(mlx.win_ptr, ButtonPress, ButtonPressMask, mouse_event, &mlx);
 	mlx_loop(mlx.mlx_ptr);
-
 	return (0);
 }
