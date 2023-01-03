@@ -1,11 +1,35 @@
+NAME		= fractol
+SRCS		= fractol.c event_listener.c MLXTras.c
+SRC_DIR		= ./src/
+BUILD_DIR	= ./build/
 
-run:
-	gcc main.c -lX11 -lXext -lmlx -g -Wall -Werror -Wextra
-	./a.out
+SRC			= ${addprefix ${BUILD_DIR},${SRCS}}
+OBJ			= ${SRC:.c=.o}
+
+CC			= gcc
+CFLAG		= -g -lX11 -lXext -lmlx -Wall -Werror -Wextra
+
+all: ${BUILD_DIR} ${NAME}
+
+clean:
+	rm -f $(OBJ)
+
+fclean: clean
+	rm -f ${NAME}
+
+re: fclean all
+
+${BUILD_DIR}:
+	mkdir -p ${BUILD_DIR}
+
+${BUILD_DIR}%.o:${SRC_DIR}%.c
+	$(CC) -c -o $@ $^
+
+${NAME}: ${OBJ}
+	$(CC) ${OBJ} -o ${NAME} $(CFLAG)
 
 # Minilibx installer
-
-mlx-linux: install-libaray install-manpage
+mlx-linux:
 	git clone git@github.com:42Paris/minilibx-linux.git mlx-linux
 	make -C ./mlx-linux
 
@@ -28,3 +52,5 @@ mlx-uninstall: /usr/man/man1/mlx.1.gz
 	sudo rm -f /usr/include/mlx*
 	sudo rm -f /usr/lib/libmlx*.a
 	sudo rm -f $(subst ./mlx-linux/man,/usr/share/man,$(shell ls ./mlx-linux/man/man*/*))
+
+.PHONY:	all clean fclean re mlx-linux mlx-test install-library install-manpage mlx-uninstall
