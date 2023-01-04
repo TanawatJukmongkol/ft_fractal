@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:20:41 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/04 02:53:12 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/04 16:48:32 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ enum	e_keydef {
 	kdef_left	= XK_Left,
 	kdef_right	= XK_Right,
 
-	kmod_win	= XK_w,
+	kmod_origin	= XK_o,
 	kmod_color	= XK_Shift_L
 };
 
@@ -64,7 +64,7 @@ enum	e_keybit {
 	kbit_left	= 0b00001000,
 	kbit_right	= 0b00010000,
 
-	kbit_win	= 0b00100000,
+	kbit_origin	= 0b00100000,
 	kbit_color	= 0b01000000
 };
 
@@ -75,7 +75,7 @@ void	mlx_int_size_limit(t_mlx *mlx, int w, int h, int max);
 int		key_event(int code, t_vars *vars);
 int		mod_key(int code, t_vars *vars);
 int		key_released(int code, t_vars *vars);
-int		mouse_event(int code, int x, int y);
+int		mouse_event(int code, int x, int y, t_vars *vars);
 int		resize_window(t_vars *vars);
 int		close_window(t_vars *vars);
 

@@ -6,15 +6,17 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:03:40 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/04 02:52:33 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/04 16:53:59 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 	Program shortcuts:
-		[ Arrow key ] (any combination): Pans the camera
-		[ Ctrl ] [ Up / down ] or [ Scroll ]: Zoom in / out
+		[ Arrow keys ]: Pans the camera
+		[ Ctrl ] [ Up / down ] or [ Ctrl ] [ Scroll ]: Zoom in / out (locked to center).
+		[ Scroll ]: Zoom in / out (follows the curser)
 		[ Ctrl ] [ Shift ] [ Up / down ]: Change color scheme
+		[ Ctrl ] [ O ]: Go back to origin (0, 0).
 		[ Esc ]: Exit application
 
 	Or change the shortcuts defined in e_keydef at fractol.h!
@@ -24,12 +26,6 @@
 #include "fractol.h"
 #include <X11/X.h>
 #include <mlx.h>
-
-int	loop(t_vars	*vars)
-{
-	// TODO: Draw a circle
-	return (0);
-}
 
 int	main(void)
 {
@@ -50,7 +46,6 @@ int	main(void)
 		&vars);
 	mlx_hook(vars.mlx.win_ptr, KeyPress, KeyPressMask, key_event, &vars);
 	mlx_hook(vars.mlx.win_ptr, KeyRelease, KeyReleaseMask, key_released, &vars);
-	mlx_loop_hook(vars.mlx.mlx_ptr, loop, &vars);
 	mlx_loop(vars.mlx.mlx_ptr);
 	return (0);
 }
