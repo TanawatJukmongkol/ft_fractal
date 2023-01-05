@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 11:34:07 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/03 15:59:07 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/04 17:22:26 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	resize_window(t_vars *vars)
 	XGetWindowAttributes((
 			(t_xvar *)vars->mlx.mlx_ptr)->display, (
 			(t_win_list *)vars->mlx.win_ptr)->window, &attr);
-	// printf("\033[A\33[2KResized! [%dx%d]\n", attr.width, attr.height);
+	printf("\033[A\33[2KResized! [%dx%d]\n", attr.width, attr.height);
 	vars->mlx.win_width = attr.width;
 	vars->mlx.win_height = attr.height;
 	return (0);

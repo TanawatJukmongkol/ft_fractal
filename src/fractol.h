@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:20:41 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/04 16:48:32 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/05 22:05:40 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FRACTOL_H
 
 // Standard headers
-# include <X11/Xlib.h>
 # include <stdio.h>
 # include <stdlib.h>
 
@@ -22,6 +21,13 @@
 # include <X11/X.h>
 # include <mlx.h>
 # include <mlx_int.h>
+
+// Keymaps
+# if __MACH__
+#  include "OSXKeycodes.h"
+# else
+#  include <X11/keysymdef.h>
+# endif
 
 typedef struct s_mlx {
 	void	*mlx_ptr;
@@ -35,6 +41,16 @@ typedef struct s_cam {
 	float	y;
 	float	zoom;
 }	t_cam;
+
+typedef struct s_image
+{
+	t_mlx	mlx;
+	int		pixel_bits;
+	int		line_bytes;
+	int		endian;
+	void	*ptr;
+	char	*buff;
+}	t_image;
 
 typedef struct s_vars {
 	t_mlx			mlx;
@@ -78,5 +94,10 @@ int		key_released(int code, t_vars *vars);
 int		mouse_event(int code, int x, int y, t_vars *vars);
 int		resize_window(t_vars *vars);
 int		close_window(t_vars *vars);
+
+// Graphics API
+void	ft_init_image(t_vars *vars, t_image *img, int w, int h);
+void	ft_draw_point(t_image *img, int x, int y, unsigned int color_hex);
+void	ft_put_image(t_image *img, int x, int y);
 
 #endif
