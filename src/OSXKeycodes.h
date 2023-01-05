@@ -125,7 +125,7 @@
 #define XK_Help					0x72
 #define XK_Home					0x73
 #define XK_PageUp				0x74
-#define XK_Delete				0x75
+#define XK_Delete_Under_Help	0x75
 #define XK_F4					0x76
 #define XK_End					0x77
 #define XK_F2					0x78
