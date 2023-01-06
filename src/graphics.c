@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 21:12:46 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/05 22:05:53 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/07 00:12:49 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_init_image(t_vars *vars, t_image *img, int w, int h)
 {
 	if (img->ptr)
-		mlx_destroy_image(vars->mlx.mlx_ptr, img->ptr);
+		return ;
 	img->ptr = mlx_new_image(vars->mlx.mlx_ptr, w, h);
 	img->buff = mlx_get_data_addr(img->ptr, &img->pixel_bits,
 			&img->line_bytes, &img->endian);

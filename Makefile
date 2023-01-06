@@ -7,7 +7,7 @@ SRC			= ${addprefix ${BUILD_DIR},${SRCS}}
 OBJ			= ${SRC:.c=.o}
 
 CC			= gcc
-CFLAG		= -g -lX11 -lXext -lmlx -Wall -Werror -Wextra -O3
+CFLAG		= -g -lX11 -lXext -lmlx -lm -Wall -Werror -Wextra -O3
 
 all: ${BUILD_DIR} ${NAME}
 

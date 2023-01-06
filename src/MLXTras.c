@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 11:34:07 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/04 17:22:26 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/07 00:28:31 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,20 @@ int	resize_window(t_vars *vars)
 	printf("\033[A\33[2KResized! [%dx%d]\n", attr.width, attr.height);
 	vars->mlx.win_width = attr.width;
 	vars->mlx.win_height = attr.height;
+	vars->mlx.win_ratio = (float)attr.width / attr.height;
+	if (vars->image.ptr != NULL)
+	{
+		mlx_destroy_image(vars->mlx.mlx_ptr, vars->image.ptr);
+		vars->image.ptr = NULL;
+	}
+	vars->update(vars);
 	return (0);
 }
 
 int	close_window(t_vars *vars)
 {
 	printf("Bye bye!\n");
+	mlx_destroy_image(vars->mlx.mlx_ptr, vars->image.ptr);
 	mlx_destroy_window(vars->mlx.mlx_ptr, vars->mlx.win_ptr);
 	mlx_destroy_display(vars->mlx.mlx_ptr);
 	free(vars->mlx.mlx_ptr);

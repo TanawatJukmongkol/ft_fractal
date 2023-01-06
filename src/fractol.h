@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:20:41 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/05 22:05:40 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/07 00:09:50 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // Standard headers
 # include <stdio.h>
 # include <stdlib.h>
+# include <math.h>
 
 // X display server headers
 # include <X11/X.h>
@@ -34,6 +35,7 @@ typedef struct s_mlx {
 	void	*win_ptr;
 	int		win_width;
 	int		win_height;
+	float	win_ratio;
 }	t_mlx;
 
 typedef struct s_cam {
@@ -52,10 +54,19 @@ typedef struct s_image
 	char	*buff;
 }	t_image;
 
+typedef struct s_cmplx
+{
+	float	re;
+	float	im;
+}	t_cmplx;
+
 typedef struct s_vars {
 	t_mlx			mlx;
 	t_cam			cam;
 	unsigned int	keys;
+	t_image			image;
+	int				*colors;
+	void			(*update)(struct s_vars *vars);
 }	t_vars;
 
 // 0 = no key assigned
