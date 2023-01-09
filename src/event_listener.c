@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:19:03 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/09 19:48:11 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/09 21:55:59 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,26 +102,21 @@ int	mouse_event(int code, int x, int y, t_vars *vars)
 
 	// cartesian_to_cmplx(vars, &cmplx_nbr, &x, &y);
 	// printf("[%d, %d] => (%f, %fi)\n", x, y, cmplx_nbr.re, cmplx_nbr.im);
-	if (code == 4)
+	if (code == 4 && vars->cam.zoom < 2000)
 	{
-		if (vars->keys == kbit_mod && vars->cam.zoom < 2000)
+		vars->cam.zoom *= 1.08;
+		if (vars->keys != kbit_mod)
 		{
-			vars->cam.zoom *= 1.08;
-			// printf("\033[A\33[2K[%f] Zoom in (locked to screen center)!\n", vars->cam.zoom);
+			vars->cam.x += ((float)x - (vars->mlx.win_width >> 1))
+				/ (vars->mlx.win_width >> 1)
+				/ vars->cam.zoom * 0.4;
+			vars->cam.y -= ((float)y - (vars->mlx.win_height >> 1))
+				/ (vars->mlx.win_height >> 1)
+				/ vars->cam.zoom * 0.4;
 		}
-		else if (vars->cam.zoom < 2000)
-			printf("\033[A\33[2KZoom in! (follows curser)\n");
 	}
-	else if (code == 5)
-	{
-		if (vars->keys == kbit_mod && vars->cam.zoom > 0.08)
-		{
-			vars->cam.zoom /= 1.08;
-			// printf("\033[A\33[2K[%f] Zoom out (locked to screen center)!\n", vars->cam.zoom);
-		}
-		else if (vars->cam.zoom > 0.08)
-			printf("\033[A\33[2KZoom out! (follows curser)\n");
-	}
+	else if (code == 5 && vars->cam.zoom > 0.08)
+		vars->cam.zoom /= 1.08;
 	vars->update(vars);
 	return (0);
 }

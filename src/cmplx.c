@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 12:24:22 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/09 19:20:06 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/09 22:29:19 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,8 @@ void	cartesian_to_cmplx(t_vars *vars, t_cmplx *cmplx_nbr, int *x, int *y)
 		+ vars->cam.y;
 }
 
-// void	calculate_point(t_cmplx *cmplx_nbr, int *ittr, int *is_in_set)
-// {
-// 	t_cmplx	z0;
-
-// 	z0.re = 0;
-// 	z0.im = 0;
-// 	*ittr = 0;
-// 	(*is_in_set) = 1;
-// 	while (*ittr < 3)
-// 	{
-// 		z0.re = (z0.re * z0.re) - (z0.im * z0.im) + cmplx_nbr->re;
-// 		z0.im = (z0.re * z0.im) + cmplx_nbr->im;
-// 		if ((z0.re * z0.re) + (z0.im * z0.im) > 4)
-// 		{
-// 			(*is_in_set) = 0;
-// 			break ;
-// 		}
-// 		(*ittr)++;
-// 	}
-// }
-
-void	calculate_point(t_cmplx *cmplx_nbr, int max_ittr, int *ittr, int *is_in_set)
+void	calculate_point(t_cmplx *cmplx_nbr,
+	int max_ittr, int *ittr, int *is_in_set)
 {
 	t_cmplx	z0;
 	float	z0_re;

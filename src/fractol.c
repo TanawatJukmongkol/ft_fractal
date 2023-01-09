@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:03:40 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/09 19:45:06 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/09 22:53:00 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,26 @@
 // 	return (0);
 // }
 
+// void	update(t_vars *vars)
+// {
+// 	t_cmplx	complex;
+// 	int		ittr;
+// 	int		is_in_set;
+
+// 	ft_init_image(vars, &vars->image, vars->mlx.win_width, vars->mlx.win_height);
+// 	for (int y = 0; y < vars->mlx.win_height; y += 1) {
+// 		for (int x = 0; x < vars->mlx.win_width; x += 1) {
+// 			cartesian_to_cmplx(vars, &complex, &x, &y);
+// 			calculate_point(&complex, vars->max_ittr, &ittr, &is_in_set);
+// 			if (ittr != vars->max_ittr)
+// 				ft_draw_point(&vars->image, x, y, vars->colors[2 + ittr % vars->colors[0]]);
+// 			else
+// 				ft_draw_point(&vars->image, x, y, vars->colors[1]);
+// 		}
+// 	}
+// 	ft_put_image(&vars->image, 0, 0);
+// }
+
 void	update(t_vars *vars)
 {
 	t_cmplx	complex;
@@ -54,8 +74,11 @@ void	update(t_vars *vars)
 		for (int x = 0; x < vars->mlx.win_width; x += 1) {
 			cartesian_to_cmplx(vars, &complex, &x, &y);
 			calculate_point(&complex, vars->max_ittr, &ittr, &is_in_set);
+			int intensR = (ittr * ((vars->colors[2] >> 16) & 0xff)) / vars->max_ittr;
+			int intensG = (ittr * ((vars->colors[2] >> 8) & 0xff)) / vars->max_ittr;
+			int intensB = (ittr * ((vars->colors[2]) & 0xff)) / vars->max_ittr;
 			if (ittr != vars->max_ittr)
-				ft_draw_point(&vars->image, x, y, vars->colors[2 + ittr % vars->colors[0]]);
+				ft_draw_point(&vars->image, x, y,  (intensR << 16) + (intensG << 8) + (intensB) + (0xff << 24));
 			else
 				ft_draw_point(&vars->image, x, y, vars->colors[1]);
 		}
@@ -75,7 +98,7 @@ int	main(void)
 	vars.cam.zoom = 1;
 	vars.image.ptr = NULL;
 	vars.update = &update;
-	vars.max_ittr = 50;
+	vars.max_ittr = 25;
 	vars.schemes[0] = (int [5]){3, 0xffbababa, 0xff424242, 0xff242424, 0xff121212};
 	vars.schemes[1] = (int [9]){7, 0xff000000, 0xffff0000, 0xffffa500, 0xffffff00, 0xff008000, 0xff0000ff, 0xff4b0082, 0xffee82ee};
 	vars.schemes[2] = (int [5]){3, 0xff000000, 0xff2242a2, 0xff2242b2, 0xff0212c2};
@@ -83,7 +106,7 @@ int	main(void)
 	vars.scheme_len = 2;
 	vars.colors = vars.schemes[vars.scheme];
 	mlx_int_size_limit(&vars.mlx, 400, 400, 0);
-	mlx_int_size_limit(&vars.mlx, 900, 900, 1);
+	mlx_int_size_limit(&vars.mlx, 600, 600, 1);
 	mlx_hook(vars.mlx.win_ptr, DestroyNotify, 0L, close_window, &vars);
 	mlx_hook(vars.mlx.win_ptr, 0, StructureNotifyMask, NULL, &vars);
 	mlx_hook(vars.mlx.win_ptr, ConfigureNotify, 0L, resize_window, &vars);
