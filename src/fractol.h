@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:20:41 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/07 00:09:50 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/09 19:43:19 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,10 @@ typedef struct s_vars {
 	unsigned int	keys;
 	t_image			image;
 	int				*colors;
+	int				*schemes[10];
+	int				scheme;
+	int				scheme_len;
+	int				max_ittr;
 	void			(*update)(struct s_vars *vars);
 }	t_vars;
 
@@ -97,6 +101,10 @@ enum	e_keybit {
 
 // MiniLibX extra functions (reversed engineered by tjukmong)
 void	mlx_int_size_limit(t_mlx *mlx, int w, int h, int max);
+
+// Complex numbers
+void	cartesian_to_cmplx(t_vars *vars, t_cmplx *cmplx_nbr, int *x, int *y);
+void	calculate_point(t_cmplx *cmplx_nbr, int max_ittr, int *ittr, int *is_in_set);
 
 // Event listeners
 int		key_event(int code, t_vars *vars);

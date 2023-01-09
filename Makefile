@@ -1,5 +1,5 @@
 NAME		= fractol
-SRCS		= fractol.c event_listener.c MLXTras.c graphics.c
+SRCS		= fractol.c event_listener.c MLXTras.c graphics.c cmplx.c
 SRC_DIR		= ./src/
 BUILD_DIR	= ./build/
 

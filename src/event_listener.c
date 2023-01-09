@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:19:03 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/06 18:46:45 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/09 19:48:11 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	key_event(int code, t_vars *vars)
 		close_window(vars);
 	if (vars->keys & kbit_mod)
 		return (mod_key(code, vars));
-	vars->cam.x += (((vars->keys & kbit_right) != 0)
+	vars->cam.x += 0.4 * (((vars->keys & kbit_right) != 0)
 			- ((vars->keys & kbit_left) != 0)) / (vars->cam.zoom * 4);
-	vars->cam.y += (((vars->keys & kbit_down) > 0)
+	vars->cam.y -= 0.4 * (((vars->keys & kbit_down) > 0)
 			- ((vars->keys & kbit_up) > 0)) / (vars->cam.zoom * 4);
 	printf("\033[A\33[2K[%f, %f]\n", vars->cam.x, vars->cam.y);
 	return (0);
@@ -42,7 +42,7 @@ int	mod_key(int code, t_vars *vars)
 		vars->keys |= kbit_origin;
 	else if (code == kmod_color)
 		vars->keys |= kbit_color;
-	if (vars->keys == (kbit_mod | kbit_up) && vars->cam.zoom < 1024)
+	if (vars->keys == (kbit_mod | kbit_up) && vars->cam.zoom < 2000)
 	{
 		vars->cam.zoom *= 1.08;
 		printf("\033[A\33[2K[%f] Zoom in shortcut (locked to screen center)!\n", vars->cam.zoom);
@@ -56,13 +56,23 @@ int	mod_key(int code, t_vars *vars)
 	{
 		vars->cam.x = 0;
 		vars->cam.y = 0;
+		// vars->cam.x = -1.748630;
+		// vars->cam.y = 0.012688;
 		vars->cam.zoom = 1;
 		printf("\033[A\33[2KSet origin!\n");
 	}
 	else if (vars->keys == (kbit_mod | kbit_color | kbit_up))
-		printf("change to next color...\n");
+	{
+		if (vars->scheme++ >= vars->scheme_len)
+			vars->scheme = 0;
+		vars->colors = vars->schemes[vars->scheme];
+	}
 	else if (vars->keys == (kbit_mod | kbit_color | kbit_down))
-		printf("change to previous color...\n");
+	{
+		if (vars->scheme-- <= 0)
+			vars->scheme = vars->scheme_len;
+		vars->colors = vars->schemes[vars->scheme];
+	}
 	return (0);
 }
 
@@ -88,14 +98,18 @@ int	key_released(int code, t_vars *vars)
 
 int	mouse_event(int code, int x, int y, t_vars *vars)
 {
+	// t_cmplx	cmplx_nbr;
+
+	// cartesian_to_cmplx(vars, &cmplx_nbr, &x, &y);
+	// printf("[%d, %d] => (%f, %fi)\n", x, y, cmplx_nbr.re, cmplx_nbr.im);
 	if (code == 4)
 	{
-		if (vars->keys == kbit_mod && vars->cam.zoom < 1024)
+		if (vars->keys == kbit_mod && vars->cam.zoom < 2000)
 		{
 			vars->cam.zoom *= 1.08;
-			printf("\033[A\33[2K[%f] Zoom in (locked to screen center)!\n", vars->cam.zoom);
+			// printf("\033[A\33[2K[%f] Zoom in (locked to screen center)!\n", vars->cam.zoom);
 		}
-		else if (vars->cam.zoom < 1024)
+		else if (vars->cam.zoom < 2000)
 			printf("\033[A\33[2KZoom in! (follows curser)\n");
 	}
 	else if (code == 5)
@@ -103,7 +117,7 @@ int	mouse_event(int code, int x, int y, t_vars *vars)
 		if (vars->keys == kbit_mod && vars->cam.zoom > 0.08)
 		{
 			vars->cam.zoom /= 1.08;
-			printf("\033[A\33[2K[%f] Zoom out (locked to screen center)!\n", vars->cam.zoom);
+			// printf("\033[A\33[2K[%f] Zoom out (locked to screen center)!\n", vars->cam.zoom);
 		}
 		else if (vars->cam.zoom > 0.08)
 			printf("\033[A\33[2KZoom out! (follows curser)\n");

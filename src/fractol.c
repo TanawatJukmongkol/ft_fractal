@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:03:40 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/07 00:34:53 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/09 19:45:06 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "fractol.h"
-#include <stdint.h>
+#include <stdlib.h>
 
 // int	loop(t_vars *vars)
 // {
@@ -43,39 +43,6 @@
 // 	return (0);
 // }
 
-void	cartesian_to_cmplx(t_vars *vars, t_cmplx *cmplx_nbr, int *x, int *y)
-{
-	cmplx_nbr->re = (*x - (float)vars->mlx.win_width / 2)
-		* ((float)4 / vars->mlx.win_width)
-		* (vars->mlx.win_ratio / vars->cam.zoom)
-		+ vars->cam.x;
-	cmplx_nbr->im = (*y - (float)vars->mlx.win_height / 2)
-		* ((float)4 / vars->mlx.win_height)
-		* (1 / vars->cam.zoom)
-		+ vars->cam.y;
-}
-
-void	calculate_point(t_cmplx cmplx_nbr, int *ittr, int *is_in_set)
-{
-	t_cmplx	z0;
-
-	z0.re = 0;
-	z0.im = 0;
-	*ittr = 0;
-	*is_in_set = 1;
-	while (*ittr < 50)
-	{
-		z0.re = (z0.re * z0.re) - (z0.im * z0.im) + cmplx_nbr.re;
-		z0.im = (2 * z0.re * z0.im) + cmplx_nbr.im;
-		if (sqrt((z0.re * z0.re) + (z0.im * z0.im)) > 2)
-		{
-			*is_in_set = 0;
-			break ;
-		}
-		(*ittr)++;
-	}
-}
-
 void	update(t_vars *vars)
 {
 	t_cmplx	complex;
@@ -83,14 +50,14 @@ void	update(t_vars *vars)
 	int		is_in_set;
 
 	ft_init_image(vars, &vars->image, vars->mlx.win_width, vars->mlx.win_height);
-	for (int y = 0; y < vars->mlx.win_height; y += 8) {
-		for (int x = 0; x < vars->mlx.win_width; x += 8) {
+	for (int y = 0; y < vars->mlx.win_height; y += 1) {
+		for (int x = 0; x < vars->mlx.win_width; x += 1) {
 			cartesian_to_cmplx(vars, &complex, &x, &y);
-			calculate_point(complex, &ittr, &is_in_set);
-			if (is_in_set)
-				ft_draw_point(&vars->image, x, y, 0x00000000);
+			calculate_point(&complex, vars->max_ittr, &ittr, &is_in_set);
+			if (ittr != vars->max_ittr)
+				ft_draw_point(&vars->image, x, y, vars->colors[2 + ittr % vars->colors[0]]);
 			else
-				ft_draw_point(&vars->image, x, y, vars->colors[ittr % 7]);
+				ft_draw_point(&vars->image, x, y, vars->colors[1]);
 		}
 	}
 	ft_put_image(&vars->image, 0, 0);
@@ -108,8 +75,13 @@ int	main(void)
 	vars.cam.zoom = 1;
 	vars.image.ptr = NULL;
 	vars.update = &update;
-	vars.colors = (int [7]){0xff0000ff, 0xffa500ff, 0xffff00ff,
-		0x008000ff, 0x0000ffff, 0x4b0082ff, 0xee82eeff};
+	vars.max_ittr = 50;
+	vars.schemes[0] = (int [5]){3, 0xffbababa, 0xff424242, 0xff242424, 0xff121212};
+	vars.schemes[1] = (int [9]){7, 0xff000000, 0xffff0000, 0xffffa500, 0xffffff00, 0xff008000, 0xff0000ff, 0xff4b0082, 0xffee82ee};
+	vars.schemes[2] = (int [5]){3, 0xff000000, 0xff2242a2, 0xff2242b2, 0xff0212c2};
+	vars.scheme = 0;
+	vars.scheme_len = 2;
+	vars.colors = vars.schemes[vars.scheme];
 	mlx_int_size_limit(&vars.mlx, 400, 400, 0);
 	mlx_int_size_limit(&vars.mlx, 900, 900, 1);
 	mlx_hook(vars.mlx.win_ptr, DestroyNotify, 0L, close_window, &vars);
