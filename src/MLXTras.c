@@ -6,11 +6,12 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 11:34:07 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/07 00:28:31 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/12 14:48:26 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+#include <stdio.h>
 
 void	mlx_int_size_limit(t_mlx *mlx, int w, int h, int max)
 {
@@ -66,4 +67,29 @@ int	close_window(t_vars *vars)
 	mlx_destroy_display(vars->mlx.mlx_ptr);
 	free(vars->mlx.mlx_ptr);
 	exit(0);
+}
+
+void	mlx_error(t_vars *vars, char *msg)
+{
+	perror("MLX error: ");
+	perror(msg);
+	if (vars->image.ptr)
+	{
+		mlx_destroy_image(vars->mlx.mlx_ptr, vars->image.ptr);
+		perror(">> image ptr destroyed.");
+	}
+	if (vars->mlx.win_ptr)
+	{
+		mlx_destroy_window(vars->mlx.mlx_ptr, vars->mlx.win_ptr);
+		perror(">> window ptr destroyed.");
+	}
+	if (vars->mlx.mlx_ptr)
+	{
+		free(vars->mlx.mlx_ptr);
+		perror(">> mlx freed.");
+	}
+	else {
+		perror("mlx failed to initialize.");
+	}
+	exit(1);
 }

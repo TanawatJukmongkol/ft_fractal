@@ -1,5 +1,5 @@
 NAME		= fractol
-SRCS		= fractol.c event_listener.c MLXTras.c graphics.c cmplx.c
+SRCS		= fractol.c event_listener.c MLXTras.c graphics.c cmplx.c fractals.c shader.c
 SRC_DIR		= ./src/
 BUILD_DIR	= ./build/
 
@@ -30,7 +30,7 @@ ${NAME}: ${OBJ}
 
 # Minilibx installer
 mlx-linux:
-	git clone git@github.com:42Paris/minilibx-linux.git mlx-linux
+	git clone https://github.com/42Paris/minilibx-linux.git mlx-linux
 	make -C ./mlx-linux
 
 mlx-test:

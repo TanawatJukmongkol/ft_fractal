@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:20:41 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/09 19:43:19 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/12 14:36:33 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,13 @@ typedef struct s_vars {
 	int				*schemes[10];
 	int				scheme;
 	int				scheme_len;
+	void			*renderers[10];
+	int				renderer;
+	int				renderer_len;
 	int				max_ittr;
 	void			(*update)(struct s_vars *vars);
+	void			(*fractol)(t_cmplx *cmplx_nbr, int max_ittr,
+			int *ittr, int *is_in_set);
 }	t_vars;
 
 // 0 = no key assigned
@@ -104,7 +109,6 @@ void	mlx_int_size_limit(t_mlx *mlx, int w, int h, int max);
 
 // Complex numbers
 void	cartesian_to_cmplx(t_vars *vars, t_cmplx *cmplx_nbr, int *x, int *y);
-void	calculate_point(t_cmplx *cmplx_nbr, int max_ittr, int *ittr, int *is_in_set);
 
 // Event listeners
 int		key_event(int code, t_vars *vars);
@@ -118,5 +122,18 @@ int		close_window(t_vars *vars);
 void	ft_init_image(t_vars *vars, t_image *img, int w, int h);
 void	ft_draw_point(t_image *img, int x, int y, unsigned int color_hex);
 void	ft_put_image(t_image *img, int x, int y);
+void	mlx_error(t_vars *vars, char *msg);
+
+// Shaders
+void	shader_1(t_vars *vars);
+void	shader_2(t_vars *vars);
+
+//	Fractol functions
+void	mandelbrot_set(t_cmplx *cmplx_nbr,
+			int max_ittr, int *ittr, int *is_in_set);
+void	julia_set(t_cmplx *cmplx_nbr,
+			int max_ittr, int *ittr, int *is_in_set);
+void	burning_ship(t_cmplx *cmplx_nbr, int max_ittr,
+			int *ittr, int *is_in_set);
 
 #endif
