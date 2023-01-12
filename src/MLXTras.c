@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 11:34:07 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/12 14:48:26 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:50:40 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ int	resize_window(t_vars *vars)
 		mlx_destroy_image(vars->mlx.mlx_ptr, vars->image.ptr);
 		vars->image.ptr = NULL;
 	}
-	vars->update(vars);
+	vars->update(vars, -1);
+	vars->draw_ittr = 0;
 	return (0);
 }
 
@@ -88,8 +89,7 @@ void	mlx_error(t_vars *vars, char *msg)
 		free(vars->mlx.mlx_ptr);
 		perror(">> mlx freed.");
 	}
-	else {
+	else
 		perror("mlx failed to initialize.");
-	}
 	exit(1);
 }

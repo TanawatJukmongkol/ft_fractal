@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:19:03 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/12 15:51:32 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:31:50 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	key_event(int code, t_vars *vars)
 			- ((vars->keys & kbit_left) != 0)) / (vars->cam.zoom * 4);
 	vars->cam.y -= 0.4 * (((vars->keys & kbit_down) > 0)
 			- ((vars->keys & kbit_up) > 0)) / (vars->cam.zoom * 4);
-	// printf("\033[A\33[2K[%f, %f]\n", vars->cam.x, vars->cam.y);
 	return (0);
 }
 
-void	change_color_scheme(int code, t_vars *vars) {
+void	change_color_scheme(int code, t_vars *vars)
+{
 	if (vars->keys == (kbit_mod | kbit_color | kbit_up))
 	{
 		if (vars->scheme++ >= vars->scheme_len)
@@ -69,7 +69,7 @@ int	mod_key(int code, t_vars *vars)
 		vars->keys |= kbit_origin;
 	else if (code == kmod_color)
 		vars->keys |= kbit_color;
-	if (vars->keys == (kbit_mod | kbit_up) && vars->cam.zoom < 2000)
+	if (vars->keys == (kbit_mod | kbit_up))
 		vars->cam.zoom *= 1.08;
 	else if (vars->keys == (kbit_mod | kbit_down) && vars->cam.zoom > 0.08)
 		vars->cam.zoom /= 1.08;
@@ -86,7 +86,8 @@ int	mod_key(int code, t_vars *vars)
 
 int	key_released(int code, t_vars *vars)
 {
-	vars->update(vars);
+	// vars->update(vars, -1);
+	vars->draw_ittr = 0;
 	if (code == kdef_mod)
 		vars->keys &= ~kbit_mod;
 	else if (code == kdef_up)
@@ -106,11 +107,7 @@ int	key_released(int code, t_vars *vars)
 
 int	mouse_event(int code, int x, int y, t_vars *vars)
 {
-	// t_cmplx	cmplx_nbr;
-
-	// cartesian_to_cmplx(vars, &cmplx_nbr, &x, &y);
-	// printf("[%d, %d] => (%f, %fi)\n", x, y, cmplx_nbr.re, cmplx_nbr.im);
-	if (code == 4 && vars->cam.zoom < 2000)
+	if (code == 4)
 	{
 		vars->cam.zoom *= 1.08;
 		if (vars->keys != kbit_mod)
@@ -125,6 +122,10 @@ int	mouse_event(int code, int x, int y, t_vars *vars)
 	}
 	else if (code == 5 && vars->cam.zoom > 0.08)
 		vars->cam.zoom /= 1.08;
-	vars->update(vars);
+	if (code == 4 || code == 5)
+	{
+		// vars->update(vars, -1);
+		vars->draw_ittr = 0;
+	}
 	return (0);
 }

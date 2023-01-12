@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:20:41 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/12 14:36:33 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/12 20:59:09 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,14 @@ typedef struct s_cmplx
 	float	im;
 }	t_cmplx;
 
+typedef struct s_shader
+{
+	int		x;
+	int		y;
+	int		ittr;
+	int		is_in_set;
+}	t_shader;
+
 typedef struct s_vars {
 	t_mlx			mlx;
 	t_cam			cam;
@@ -73,7 +81,9 @@ typedef struct s_vars {
 	int				renderer;
 	int				renderer_len;
 	int				max_ittr;
-	void			(*update)(struct s_vars *vars);
+	int				draw_ittr;
+	int				draw_offset;
+	void			(*update)(struct s_vars *vars, int draw_ittr);
 	void			(*fractol)(t_cmplx *cmplx_nbr, int max_ittr,
 			int *ittr, int *is_in_set);
 }	t_vars;
@@ -125,8 +135,8 @@ void	ft_put_image(t_image *img, int x, int y);
 void	mlx_error(t_vars *vars, char *msg);
 
 // Shaders
-void	shader_1(t_vars *vars);
-void	shader_2(t_vars *vars);
+void	shader_1(t_vars *vars, int draw_ittr);
+void	shader_2(t_vars *vars, int draw_ittr);
 
 //	Fractol functions
 void	mandelbrot_set(t_cmplx *cmplx_nbr,

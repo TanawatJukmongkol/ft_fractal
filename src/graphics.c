@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 21:12:46 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/12 12:36:20 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/12 17:32:36 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	ft_init_image(t_vars *vars, t_image *img, int w, int h)
 	if (img->ptr)
 		return ;
 	img->ptr = mlx_new_image(vars->mlx.mlx_ptr, w, h);
+	if (!img->ptr)
+		mlx_error(vars, "Failed to initialize image ptr.");
 	img->buff = mlx_get_data_addr(img->ptr, &img->pixel_bits,
 			&img->line_bytes, &img->endian);
 	img->mlx = vars->mlx;

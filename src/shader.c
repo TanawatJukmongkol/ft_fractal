@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 12:36:50 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/12 17:21:48 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/12 20:50:39 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,60 +23,57 @@ void	draw_point_rgb(t_vars *vars, int x, int y, int ittr)
 				/ vars->max_ittr)) + (0xff << 24));
 }
 
-void	shader_1(t_vars *vars)
+void	shader_1(t_vars *vars, int draw_ittr)
 {
-	t_cmplx	complex;
-	int		x;
-	int		y;
-	int		ittr;
-	int		is_in_set;
+	t_cmplx		complex;
+	t_shader	shad;
 
-	x = 0;
-	y = 0;
+	shad.y = (draw_ittr != -1) * draw_ittr / 8;
 	ft_init_image(vars, &vars->image,
 		vars->mlx.win_width, vars->mlx.win_height);
-	while (++y < vars->mlx.win_height)
+	while (shad.y < vars->mlx.win_height)
 	{
-		while (++x < vars->mlx.win_width)
+		shad.x = (draw_ittr != -1) * draw_ittr % 8;
+		while (shad.x < vars->mlx.win_width)
 		{
-			cartesian_to_cmplx(vars, &complex, &x, &y);
-			vars->fractol(&complex, vars->max_ittr, &ittr, &is_in_set);
-			if (ittr != vars->max_ittr)
-				ft_draw_point(&vars->image, x, y,
-					vars->colors[2 + ittr % vars->colors[0]]);
+			cartesian_to_cmplx(vars, &complex, &shad.x, &shad.y);
+			vars->fractol(&complex, vars->max_ittr,
+				&shad.ittr, &shad.is_in_set);
+			if (shad.ittr != vars->max_ittr)
+				ft_draw_point(&vars->image, shad.x, shad.y,
+					vars->colors[2 + shad.ittr % vars->colors[0]]);
 			else
-				ft_draw_point(&vars->image, x, y, vars->colors[1]);
+				ft_draw_point(&vars->image, shad.x, shad.y, vars->colors[1]);
+			shad.x += 1 + 7 * (draw_ittr != -1);
 		}
-		x = 0;
+		shad.y += 1 + 7 * (draw_ittr != -1);
 	}
 	ft_put_image(&vars->image, 0, 0);
 }
 
-void	shader_2(t_vars *vars)
+void	shader_2(t_vars *vars, int draw_ittr)
 {
-	t_cmplx	complex;
-	int		x;
-	int		y;
-	int		ittr;
-	int		is_in_set;
+	t_cmplx		complex;
+	t_shader	shad;
 
-	x = 0;
-	y = 0;
+	shad.y = (draw_ittr != -1) * draw_ittr / 8;
 	ft_init_image(vars, &vars->image,
 		vars->mlx.win_width, vars->mlx.win_height);
-	while (++y < vars->mlx.win_height)
+	while (shad.y < vars->mlx.win_height)
 	{
-		while (++x < vars->mlx.win_width)
+		shad.x = (draw_ittr != -1) * draw_ittr % 8;
+		while (shad.x < vars->mlx.win_width)
 		{
-			cartesian_to_cmplx(vars, &complex, &x, &y);
+			cartesian_to_cmplx(vars, &complex, &shad.x, &shad.y);
 			vars->fractol(&complex, vars->max_ittr,
-				&ittr, &is_in_set);
-			if (ittr != vars->max_ittr)
-				draw_point_rgb(vars, x , y, ittr);
+				&shad.ittr, &shad.is_in_set);
+			if (shad.ittr != vars->max_ittr)
+				draw_point_rgb(vars, shad.x, shad.y, shad.ittr);
 			else
-				ft_draw_point(&vars->image, x, y, vars->colors[1]);
+				ft_draw_point(&vars->image, shad.x, shad.y, vars->colors[1]);
+			shad.x += 1 + 7 * (draw_ittr != -1);
 		}
-		x = 0;
+		shad.y += 1 + 7 * (draw_ittr != -1);
 	}
 	ft_put_image(&vars->image, 0, 0);
 }

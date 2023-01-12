@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:03:40 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/12 16:35:42 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/12 22:13:03 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,25 @@
 
 #include "fractol.h"
 
-// int	loop(t_vars *vars)
-// {
-// 	t_image	image;
+int	loop(t_vars *vars)
+{
+	int	count;
 
-// 	image.ptr = NULL;
-// 	ft_init_image(vars, &image, 69, 69);
-// 	for (int y = 0; y < 69; ++y) {
-// 		for (int x = 0; x < 69; ++x) {
-// 			ft_draw_point(&image, x, y, 0xffffff);
-// 		}
-// 	}
-// 	ft_put_image(&image, 69, 69);
-// 	ft_put_image(&image, 42, 42);
-// 	return (0);
-// }
+	count = 0;
+	if (!vars->image.ptr)
+		return (0);
+	if (vars->draw_ittr < 64 * 8)
+	{
+		while (count < 8)
+		{
+			vars->update(vars, vars->draw_ittr % 64);
+			vars->draw_ittr += (count + vars->draw_offset) % 8;
+			count++;
+		}
+		vars->draw_offset = (vars->draw_offset + 1) % 8;
+	}
+	return (0);
+}
 
 void	init_vars(t_vars *vars)
 {
@@ -56,17 +60,19 @@ void	init_vars(t_vars *vars)
 	vars->cam.y = 0;
 	vars->cam.zoom = 1;
 	vars->image.ptr = NULL;
-	vars->max_ittr = 35;
+	vars->max_ittr = 169;
+	vars->draw_ittr = 0;
+	vars->draw_offset = 5;
 	vars->scheme = 0;
 	vars->scheme_len = 2;
 	vars->colors = vars->schemes[vars->scheme];
 	vars->renderer = 0;
 	vars->renderer_len = 1;
 	vars->update = vars->renderers[vars->renderer];
-	vars->fractol = &mandelbrot_set;
+	vars->fractol = &burning_ship;
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_vars	vars;
 
@@ -80,7 +86,7 @@ int	main(void)
 	vars.renderers[1] = &shader_2;
 	init_vars(&vars);
 	mlx_int_size_limit(&vars.mlx, 400, 400, 0);
-	mlx_int_size_limit(&vars.mlx, 600, 600, 1);
+	mlx_int_size_limit(&vars.mlx, 800, 800, 1);
 	mlx_hook(vars.mlx.win_ptr, DestroyNotify, 0L, close_window, &vars);
 	mlx_hook(vars.mlx.win_ptr, 0, StructureNotifyMask, NULL, &vars);
 	mlx_hook(vars.mlx.win_ptr, ConfigureNotify, 0L, resize_window, &vars);
@@ -88,7 +94,7 @@ int	main(void)
 		&vars);
 	mlx_hook(vars.mlx.win_ptr, KeyPress, KeyPressMask, key_event, &vars);
 	mlx_hook(vars.mlx.win_ptr, KeyRelease, KeyReleaseMask, key_released, &vars);
-	// mlx_loop_hook(vars.mlx.mlx_ptr, loop, &vars);
+	mlx_loop_hook(vars.mlx.mlx_ptr, loop, &vars);
 	mlx_loop(vars.mlx.mlx_ptr);
 	return (0);
 }
