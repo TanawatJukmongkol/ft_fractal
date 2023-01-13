@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:03:40 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/12 22:13:03 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/13 15:37:49 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	loop(t_vars *vars)
 		return (0);
 	if (vars->draw_ittr < 64 * 8)
 	{
-		while (count < 8)
+		while (count < 9)
 		{
 			vars->update(vars, vars->draw_ittr % 64);
 			vars->draw_ittr += (count + vars->draw_offset) % 8;
@@ -60,7 +60,7 @@ void	init_vars(t_vars *vars)
 	vars->cam.y = 0;
 	vars->cam.zoom = 1;
 	vars->image.ptr = NULL;
-	vars->max_ittr = 169;
+	vars->max_ittr = 142;
 	vars->draw_ittr = 0;
 	vars->draw_offset = 5;
 	vars->scheme = 0;
@@ -69,7 +69,7 @@ void	init_vars(t_vars *vars)
 	vars->renderer = 0;
 	vars->renderer_len = 1;
 	vars->update = vars->renderers[vars->renderer];
-	vars->fractol = &burning_ship;
+	vars->fractol = &mandelbrot_set;
 }
 
 int	main(int argc, char **argv)
