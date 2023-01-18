@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:03:40 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/19 04:18:47 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/19 04:34:03 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,22 @@ void	init_vars(t_vars *vars)
 
 void	init_program(t_vars *vars, int argc, char *argv[])
 {
+	int	fractal;
+
 	mlx_int_size_limit(&vars->mlx, 400, 400, 0);
 	mlx_int_size_limit(&vars->mlx, 800, 800, 1);
-	if (argc < 2)
+	if (argc > 1)
+		fractal = ft_atoi(argv[1]);
+	if (argc < 2 || fractal < 0 || fractal > 2)
 	{
-		ft_putstr_fd("No argument passed\nManual: \n", 1);
-		ft_putstr_fd(" fractals [fractal 0 - 2] [*real] [*imaginary]\n", 1);
+		ft_putstr_fd("Invalid or no argument passed\nManual: \n ./fractol", 1);
+		ft_putstr_fd(" [fractal 0: mandelbrot, 1: julia, 2: burning ship]", 1);
+		ft_putstr_fd(" [*real -2000 to 2000] [*imaginary -2000 to 2000]\n", 1);
 		close_window(vars);
 	}
-	if (ft_atoi(argv[1]) == 0)
+	if (fractal == 0)
 		vars->fractol = &mandelbrot_set;
-	else if (ft_atoi(argv[1]) == 1)
+	else if (fractal == 1)
 	{
 		vars->fractol = &julia_set;
 		if (!argv[2] || !argv[3])
@@ -95,10 +100,8 @@ void	init_program(t_vars *vars, int argc, char *argv[])
 		vars->init_cmplx.im = (float)ft_atoi(argv[2]) / 1000;
 		vars->init_cmplx.re = (float)ft_atoi(argv[3]) / 1000;
 	}
-	else if (ft_atoi(argv[1]) == 2)
+	else if (fractal == 2)
 		vars->fractol = &burning_ship;
-	else
-		mlx_error(vars, "invalid fractal argument");
 }
 
 int	main(int argc, char *argv[])

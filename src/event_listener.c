@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:19:03 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/19 04:22:37 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/19 05:19:50 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ int	key_released(int code, t_vars *vars)
 
 int	mouse_event(int code, int x, int y, t_vars *vars)
 {
-	if (code == 4)
+	printf("%d\n", code);
+	if (code == mouse_Middle_Up)
 	{
 		vars->cam.zoom *= 1.08;
 		if (vars->keys != kbit_mod)
@@ -91,16 +92,15 @@ int	mouse_event(int code, int x, int y, t_vars *vars)
 				/ vars->cam.zoom * 0.4;
 		}
 	}
-	else if (code == 5 && vars->cam.zoom > 0.08)
+	else if (mouse_Middle_Down == 5 && vars->cam.zoom > 0.08)
 		vars->cam.zoom /= 1.08;
-	if (code == 4 || code == 5)
+	if (code == mouse_Middle_Up || code == mouse_Middle_Down)
 		vars->draw_ittr = 0;
 	return (0);
 }
 
 int	mouse_event_move(int x, int y, t_vars *vars)
 {
-
 	vars->draw_ittr = 0;
 	vars->init_cmplx.im = (x - ((float)vars->mlx.win_width / 2))
 		* 2 / vars->mlx.win_width;

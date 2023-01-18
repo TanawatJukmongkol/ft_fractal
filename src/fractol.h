@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:20:41 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/19 03:32:11 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/19 04:55:17 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FRACTOL_H
 
 // Standard headers
-# include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
 
@@ -26,12 +25,8 @@
 // include 42 librarys
 # include "../lib/libft/libft.h"
 
-// Keymaps
-# if __MACH__
-#  include "OSXKeycodes.h"
-# else
-#  include <X11/keysymdef.h>
-# endif
+// include keycodes
+# include "event_codes.h"
 
 typedef struct s_mlx {
 	void	*mlx_ptr;
@@ -91,30 +86,6 @@ typedef struct s_vars {
 	void			(*fractol)(struct s_vars *vars, t_cmplx *cmplx_nbr,
 			int *ittr, int *is_in_set);
 }	t_vars;
-
-// 0 = no key assigned
-// kdef_ = key defines
-// kmod_ = moded key combinations
-enum	e_keydef {
-	kdef_term	= XK_Escape,
-	kdef_mod	= XK_Control_L,
-	kdef_up		= XK_Up,
-	kdef_down	= XK_Down,
-	kdef_left	= XK_Left,
-	kdef_right	= XK_Right,
-	kmod_origin	= XK_o,
-	kmod_color	= XK_Shift_L
-};
-
-enum	e_keybit {
-	kbit_mod	= 0b00000001,
-	kbit_up		= 0b00000010,
-	kbit_down	= 0b00000100,
-	kbit_left	= 0b00001000,
-	kbit_right	= 0b00010000,
-	kbit_origin	= 0b00100000,
-	kbit_color	= 0b01000000
-};
 
 // MiniLibX extra functions (reversed engineered by tjukmong)
 void	mlx_int_size_limit(t_mlx *mlx, int w, int h, int max);
