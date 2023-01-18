@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:20:41 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/12 20:59:09 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/19 03:32:11 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <X11/X.h>
 # include <mlx.h>
 # include <mlx_int.h>
+
+// include 42 librarys
+# include "../lib/libft/libft.h"
 
 // Keymaps
 # if __MACH__
@@ -83,8 +86,9 @@ typedef struct s_vars {
 	int				max_ittr;
 	int				draw_ittr;
 	int				draw_offset;
+	t_cmplx			init_cmplx;
 	void			(*update)(struct s_vars *vars, int draw_ittr);
-	void			(*fractol)(t_cmplx *cmplx_nbr, int max_ittr,
+	void			(*fractol)(struct s_vars *vars, t_cmplx *cmplx_nbr,
 			int *ittr, int *is_in_set);
 }	t_vars;
 
@@ -98,7 +102,6 @@ enum	e_keydef {
 	kdef_down	= XK_Down,
 	kdef_left	= XK_Left,
 	kdef_right	= XK_Right,
-
 	kmod_origin	= XK_o,
 	kmod_color	= XK_Shift_L
 };
@@ -109,7 +112,6 @@ enum	e_keybit {
 	kbit_down	= 0b00000100,
 	kbit_left	= 0b00001000,
 	kbit_right	= 0b00010000,
-
 	kbit_origin	= 0b00100000,
 	kbit_color	= 0b01000000
 };
@@ -125,6 +127,7 @@ int		key_event(int code, t_vars *vars);
 int		mod_key(int code, t_vars *vars);
 int		key_released(int code, t_vars *vars);
 int		mouse_event(int code, int x, int y, t_vars *vars);
+int		mouse_event_move(int x, int y, t_vars *vars);
 int		resize_window(t_vars *vars);
 int		close_window(t_vars *vars);
 
@@ -133,17 +136,18 @@ void	ft_init_image(t_vars *vars, t_image *img, int w, int h);
 void	ft_draw_point(t_image *img, int x, int y, unsigned int color_hex);
 void	ft_put_image(t_image *img, int x, int y);
 void	mlx_error(t_vars *vars, char *msg);
+void	change_color_scheme(int code, t_vars *vars);
 
 // Shaders
 void	shader_1(t_vars *vars, int draw_ittr);
 void	shader_2(t_vars *vars, int draw_ittr);
 
 //	Fractol functions
-void	mandelbrot_set(t_cmplx *cmplx_nbr,
-			int max_ittr, int *ittr, int *is_in_set);
-void	julia_set(t_cmplx *cmplx_nbr,
-			int max_ittr, int *ittr, int *is_in_set);
-void	burning_ship(t_cmplx *cmplx_nbr, int max_ittr,
+void	mandelbrot_set(t_vars *vars, t_cmplx *cmplx_nbr,
+			int *ittr, int *is_in_set);
+void	julia_set(t_vars *vars, t_cmplx *cmplx_nbr,
+			int *ittr, int *is_in_set);
+void	burning_ship(t_vars *vars, t_cmplx *cmplx_nbr,
 			int *ittr, int *is_in_set);
 
 #endif

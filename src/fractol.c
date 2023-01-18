@@ -6,18 +6,19 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:03:40 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/13 15:37:49 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/19 04:18:47 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //////////////////////////////////////////////////////////////////////
 //	Program shortcuts:												//
 //		[ Arrow keys ]: Pans the camera								//
-//		[ Ctrl ] [ Up / down ]										//
+//		[ Ctrl ] [ up / down ]										//
 //			or														//
-//		[ Ctrl ] [ Scroll ]: Zoom in / out (locked to center).		//
-//		[ Scroll ]: Zoom in / out (follows the curser)				//
-//		[ Ctrl ] [ Shift ] [ Up / down ]: Change color scheme		//
+//		[ Ctrl ] [ scroll ]: Zoom in / out (locked to center).		//
+//		[ Scroll ]: zoom in / out (follows the curser)				//
+//		[ Ctrl ] [ shift ] [ up / down ]: Change color scheme		//
+//		[ Ctrl ] [ shift ] [ left / right ]: Change fractal shader	//
 //		[ Ctrl ] [ O ]: Go back to origin (0, 0).					//
 //		[ Esc ]: Exit application									//
 //																	//
@@ -69,10 +70,38 @@ void	init_vars(t_vars *vars)
 	vars->renderer = 0;
 	vars->renderer_len = 1;
 	vars->update = vars->renderers[vars->renderer];
+	vars->init_cmplx.im = -0.4;
+	vars->init_cmplx.re = 0.6;
 	vars->fractol = &mandelbrot_set;
 }
 
-int	main(int argc, char **argv)
+void	init_program(t_vars *vars, int argc, char *argv[])
+{
+	mlx_int_size_limit(&vars->mlx, 400, 400, 0);
+	mlx_int_size_limit(&vars->mlx, 800, 800, 1);
+	if (argc < 2)
+	{
+		ft_putstr_fd("No argument passed\nManual: \n", 1);
+		ft_putstr_fd(" fractals [fractal 0 - 2] [*real] [*imaginary]\n", 1);
+		close_window(vars);
+	}
+	if (ft_atoi(argv[1]) == 0)
+		vars->fractol = &mandelbrot_set;
+	else if (ft_atoi(argv[1]) == 1)
+	{
+		vars->fractol = &julia_set;
+		if (!argv[2] || !argv[3])
+			return ;
+		vars->init_cmplx.im = (float)ft_atoi(argv[2]) / 1000;
+		vars->init_cmplx.re = (float)ft_atoi(argv[3]) / 1000;
+	}
+	else if (ft_atoi(argv[1]) == 2)
+		vars->fractol = &burning_ship;
+	else
+		mlx_error(vars, "invalid fractal argument");
+}
+
+int	main(int argc, char *argv[])
 {
 	t_vars	vars;
 
@@ -85,13 +114,14 @@ int	main(int argc, char **argv)
 	vars.renderers[0] = &shader_1;
 	vars.renderers[1] = &shader_2;
 	init_vars(&vars);
-	mlx_int_size_limit(&vars.mlx, 400, 400, 0);
-	mlx_int_size_limit(&vars.mlx, 800, 800, 1);
+	init_program(&vars, argc, argv);
 	mlx_hook(vars.mlx.win_ptr, DestroyNotify, 0L, close_window, &vars);
 	mlx_hook(vars.mlx.win_ptr, 0, StructureNotifyMask, NULL, &vars);
 	mlx_hook(vars.mlx.win_ptr, ConfigureNotify, 0L, resize_window, &vars);
 	mlx_hook(vars.mlx.win_ptr, ButtonPress, ButtonPressMask, mouse_event,
 		&vars);
+	mlx_hook(vars.mlx.win_ptr, MotionNotify, Button3MotionMask,
+		mouse_event_move, &vars);
 	mlx_hook(vars.mlx.win_ptr, KeyPress, KeyPressMask, key_event, &vars);
 	mlx_hook(vars.mlx.win_ptr, KeyRelease, KeyReleaseMask, key_released, &vars);
 	mlx_loop_hook(vars.mlx.mlx_ptr, loop, &vars);

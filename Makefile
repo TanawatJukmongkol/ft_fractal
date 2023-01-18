@@ -1,10 +1,13 @@
 NAME		= fractol
 SRCS		= fractol.c event_listener.c MLXTras.c graphics.c cmplx.c fractals.c shader.c
+LIB			= libft
+
 SRC_DIR		= ./src/
+LIB_DIR		= ./lib/
 BUILD_DIR	= ./build/
 
 SRC			= ${addprefix ${BUILD_DIR},${SRCS}}
-OBJ			= ${SRC:.c=.o}
+OBJ			= ${SRC:.c=.o} ${LIB_DIR}${LIB}/*.o
 
 CC			= gcc
 CFLAG		= -g -lX11 -lXext -lmlx -lm -Wall -Werror -Wextra -O3
@@ -26,6 +29,7 @@ ${BUILD_DIR}%.o:${SRC_DIR}%.c
 	$(CC) -c -o $@ $^
 
 ${NAME}: ${OBJ}
+	make -C ${LIB_DIR}${LIB}
 	$(CC) ${OBJ} -o ${NAME} $(CFLAG)
 
 # Minilibx installer

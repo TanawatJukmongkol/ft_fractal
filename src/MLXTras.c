@@ -6,12 +6,11 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 11:34:07 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/12 21:50:40 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/19 04:17:58 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-#include <stdio.h>
 
 void	mlx_int_size_limit(t_mlx *mlx, int w, int h, int max)
 {
@@ -46,7 +45,6 @@ int	resize_window(t_vars *vars)
 	XGetWindowAttributes((
 			(t_xvar *)vars->mlx.mlx_ptr)->display, (
 			(t_win_list *)vars->mlx.win_ptr)->window, &attr);
-	printf("\033[A\33[2KResized! [%dx%d]\n", attr.width, attr.height);
 	vars->mlx.win_width = attr.width;
 	vars->mlx.win_height = attr.height;
 	vars->mlx.win_ratio = (float)attr.width / attr.height;
@@ -62,8 +60,8 @@ int	resize_window(t_vars *vars)
 
 int	close_window(t_vars *vars)
 {
-	printf("Bye bye!\n");
-	mlx_destroy_image(vars->mlx.mlx_ptr, vars->image.ptr);
+	if (vars->image.ptr)
+		mlx_destroy_image(vars->mlx.mlx_ptr, vars->image.ptr);
 	mlx_destroy_window(vars->mlx.mlx_ptr, vars->mlx.win_ptr);
 	mlx_destroy_display(vars->mlx.mlx_ptr);
 	free(vars->mlx.mlx_ptr);
@@ -72,24 +70,24 @@ int	close_window(t_vars *vars)
 
 void	mlx_error(t_vars *vars, char *msg)
 {
-	perror("MLX error: ");
+	ft_putstr_fd("--[ ERROR ]--\n", 1);
 	perror(msg);
 	if (vars->image.ptr)
 	{
 		mlx_destroy_image(vars->mlx.mlx_ptr, vars->image.ptr);
-		perror(">> image ptr destroyed.");
+		ft_putstr_fd(">> image ptr destroyed.\n", 1);
 	}
 	if (vars->mlx.win_ptr)
 	{
 		mlx_destroy_window(vars->mlx.mlx_ptr, vars->mlx.win_ptr);
-		perror(">> window ptr destroyed.");
+		ft_putstr_fd(">> window ptr destroyed.\n", 1);
 	}
 	if (vars->mlx.mlx_ptr)
 	{
 		free(vars->mlx.mlx_ptr);
-		perror(">> mlx freed.");
+		ft_putstr_fd(">> mlx freed.\n", 1);
 	}
 	else
-		perror("mlx failed to initialize.");
+		perror("mlx failed to initialize.\n");
 	exit(1);
 }

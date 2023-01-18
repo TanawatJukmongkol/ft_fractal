@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:19:03 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/12 21:31:50 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/19 03:13:40 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,6 @@ int	key_event(int code, t_vars *vars)
 	return (0);
 }
 
-void	change_color_scheme(int code, t_vars *vars)
-{
-	if (vars->keys == (kbit_mod | kbit_color | kbit_up))
-	{
-		if (vars->scheme++ >= vars->scheme_len)
-			vars->scheme = 0;
-		vars->colors = vars->schemes[vars->scheme];
-	}
-	else if (vars->keys == (kbit_mod | kbit_color | kbit_down))
-	{
-		if (vars->scheme-- <= 0)
-			vars->scheme = vars->scheme_len;
-		vars->colors = vars->schemes[vars->scheme];
-	}
-	else if (vars->keys == (kbit_mod | kbit_color | kbit_left))
-	{
-		if (vars->renderer++ >= vars->renderer_len)
-			vars->renderer = 0;
-		vars->update = vars->renderers[vars->renderer];
-	}
-	else if (vars->keys == (kbit_mod | kbit_color | kbit_right))
-	{
-		if (vars->renderer-- <= 0)
-			vars->renderer = vars->renderer_len;
-		vars->update = vars->renderers[vars->renderer];
-	}
-}
-
 int	mod_key(int code, t_vars *vars)
 {
 	if (code == kmod_origin)
@@ -86,7 +58,6 @@ int	mod_key(int code, t_vars *vars)
 
 int	key_released(int code, t_vars *vars)
 {
-	// vars->update(vars, -1);
 	vars->draw_ittr = 0;
 	if (code == kdef_mod)
 		vars->keys &= ~kbit_mod;
@@ -123,9 +94,16 @@ int	mouse_event(int code, int x, int y, t_vars *vars)
 	else if (code == 5 && vars->cam.zoom > 0.08)
 		vars->cam.zoom /= 1.08;
 	if (code == 4 || code == 5)
-	{
-		// vars->update(vars, -1);
 		vars->draw_ittr = 0;
-	}
 	return (0);
+}
+
+int	mouse_event_move(int x, int y, t_vars *vars)
+{
+
+	vars->draw_ittr = 0;
+	vars->init_cmplx.im = (x - ((float)vars->mlx.win_width / 2))
+		* 2 / vars->mlx.win_width;
+	vars->init_cmplx.re = (y - ((float)vars->mlx.win_height / 2))
+		* 2 / vars->mlx.win_height;
 }

@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 12:36:50 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/12 20:50:39 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/19 02:57:15 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	shader_1(t_vars *vars, int draw_ittr)
 		while (shad.x < vars->mlx.win_width)
 		{
 			cartesian_to_cmplx(vars, &complex, &shad.x, &shad.y);
-			vars->fractol(&complex, vars->max_ittr,
+			vars->fractol(vars, &complex,
 				&shad.ittr, &shad.is_in_set);
 			if (shad.ittr != vars->max_ittr)
 				ft_draw_point(&vars->image, shad.x, shad.y,
@@ -65,7 +65,7 @@ void	shader_2(t_vars *vars, int draw_ittr)
 		while (shad.x < vars->mlx.win_width)
 		{
 			cartesian_to_cmplx(vars, &complex, &shad.x, &shad.y);
-			vars->fractol(&complex, vars->max_ittr,
+			vars->fractol(vars, &complex,
 				&shad.ittr, &shad.is_in_set);
 			if (shad.ittr != vars->max_ittr)
 				draw_point_rgb(vars, shad.x, shad.y, shad.ittr);
