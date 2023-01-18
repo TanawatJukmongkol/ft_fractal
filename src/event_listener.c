@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:19:03 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/19 03:13:40 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/19 04:22:37 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,5 @@ int	mouse_event_move(int x, int y, t_vars *vars)
 		* 2 / vars->mlx.win_width;
 	vars->init_cmplx.re = (y - ((float)vars->mlx.win_height / 2))
 		* 2 / vars->mlx.win_height;
+	return (0);
 }
