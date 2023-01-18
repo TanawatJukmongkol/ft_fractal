@@ -1,18 +1,20 @@
 NAME		= fractol
 SRCS		= fractol.c event_listener.c MLXTras.c graphics.c cmplx.c fractals.c shader.c
-LIB			= libft
 
 SRC_DIR		= ./src/
 LIB_DIR		= ./lib/
 BUILD_DIR	= ./build/
 
 SRC			= ${addprefix ${BUILD_DIR},${SRCS}}
-OBJ			= ${SRC:.c=.o} ${LIB_DIR}${LIB}/*.o
+OBJ			= ${SRC:.c=.o}
 
 CC			= gcc
 CFLAG		= -g -lX11 -lXext -lmlx -lm -Wall -Werror -Wextra -O3
 
-all: ${BUILD_DIR} ${NAME}
+all: library ${BUILD_DIR} ${NAME}
+
+library:
+	find ${LIB_DIR} -mindepth 1 -maxdepth 1 -exec make -C {} \;
 
 clean:
 	rm -f $(OBJ)
@@ -29,8 +31,7 @@ ${BUILD_DIR}%.o:${SRC_DIR}%.c
 	$(CC) -c -o $@ $^
 
 ${NAME}: ${OBJ}
-	make -C ${LIB_DIR}${LIB}
-	$(CC) ${OBJ} -o ${NAME} $(CFLAG)
+	$(CC) ${OBJ} ${wildcard ${LIB_DIR}/*/*.a} -o ${NAME} $(CFLAG)
 
 # Minilibx installer
 mlx-linux:
