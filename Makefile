@@ -58,4 +58,4 @@ mlx-uninstall: /usr/man/man1/mlx.1.gz
 	sudo rm -f /usr/lib/libmlx*.a
 	sudo rm -f $(subst ./mlx-linux/man,/usr/share/man,$(shell ls ./mlx-linux/man/man*/*))
 
-.PHONY:	all clean fclean re mlx-linux mlx-test install-library install-manpage mlx-uninstall
+.PHONY:	all library clean fclean re mlx-linux mlx-test install-library install-manpage mlx-uninstall
