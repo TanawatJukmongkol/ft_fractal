@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 04:50:18 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/19 05:17:08 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/19 05:23:49 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,6 @@ enum	e_mousedef {
 	mouse_Middle		= 3,
 	mouse_Middle_Up		= 4,
 	mouse_Middle_Down	= 5
-
 };
 
 # endif
