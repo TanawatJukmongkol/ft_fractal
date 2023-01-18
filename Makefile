@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/01/19 06:32:57 by tjukmong          #+#    #+#              #
+#    Updated: 2023/01/19 06:33:00 by tjukmong         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME		= fractol
 SRCS		= fractol.c event_listener.c MLXTras.c graphics.c cmplx.c fractals.c shader.c
 
