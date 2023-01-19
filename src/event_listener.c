@@ -105,7 +105,7 @@ int	mouse_event_move(int x, int y, t_vars *vars)
 	vars->init_cmplx.im = (x - ((float)vars->mlx.win_width / 2))
 		* 2 / vars->mlx.win_width;
 	vars->init_cmplx.re = (y - ((float)vars->mlx.win_height / 2))
-		* 2 / vars->mlx.win_height;	
+		* 2 / vars->mlx.win_height;
 	vars->draw_ittr = 0;
 	return (0);
 }
