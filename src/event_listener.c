@@ -91,7 +91,7 @@ int	mouse_event(int code, int x, int y, t_vars *vars)
 				/ vars->cam.zoom * 0.4;
 		}
 	}
-	else if (mouse_Middle_Down == 5 && vars->cam.zoom > 0.08)
+	else if (code == mouse_Middle_Down && vars->cam.zoom > 0.08)
 		vars->cam.zoom /= 1.08;
 	if (code == mouse_Middle_Up || code == mouse_Middle_Down)
 		vars->draw_ittr = 0;
@@ -100,10 +100,12 @@ int	mouse_event(int code, int x, int y, t_vars *vars)
 
 int	mouse_event_move(int x, int y, t_vars *vars)
 {
-	vars->draw_ittr = 0;
+	if (vars->fractol != &julia_set)
+		return (1);
 	vars->init_cmplx.im = (x - ((float)vars->mlx.win_width / 2))
 		* 2 / vars->mlx.win_width;
 	vars->init_cmplx.re = (y - ((float)vars->mlx.win_height / 2))
-		* 2 / vars->mlx.win_height;
+		* 2 / vars->mlx.win_height;	
+	vars->draw_ittr = 0;
 	return (0);
 }
