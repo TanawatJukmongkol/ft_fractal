@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:19:03 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/01/19 05:19:50 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/01/19 11:49:55 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int	key_released(int code, t_vars *vars)
 
 int	mouse_event(int code, int x, int y, t_vars *vars)
 {
-	printf("%d\n", code);
 	if (code == mouse_Middle_Up)
 	{
 		vars->cam.zoom *= 1.08;
